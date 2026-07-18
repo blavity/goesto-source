@@ -2,7 +2,7 @@ import { z } from 'zod'
 
 defineRouteMeta({
   openAPI: {
-    description: 'Search links by slug, URL, comment, or tag',
+    description: 'Search links with a non-empty keyword or exact URL. Tag and status only filter those searches; requests without a search selector return an empty array.',
     security: [{ bearerAuth: [] }],
     parameters: [
       {
@@ -10,7 +10,7 @@ defineRouteMeta({
         in: 'query',
         required: false,
         schema: { type: 'string' },
-        description: 'Case-insensitive substring to match against slug, URL, comment, or tag',
+        description: 'Non-empty case-insensitive substring to match against slug, URL, comment, or tag',
       },
       {
         name: 'url',
@@ -38,7 +38,7 @@ defineRouteMeta({
         in: 'query',
         required: false,
         schema: { type: 'integer', minimum: 1, maximum: 1000, default: 20 },
-        description: 'Maximum matches when search parameters are present',
+        description: 'Maximum matches for keyword or exact URL searches',
       },
     ],
   },
@@ -56,9 +56,11 @@ const SearchQuerySchema = z.object({
 
 export default eventHandler(async (event) => {
   const query = await getValidatedQuery(event, SearchQuerySchema.parse)
-  const hasSearch = query.q !== undefined || query.url !== undefined || query.tag !== undefined
+  if (!query.q && !query.url)
+    return []
+
   return await searchLinks(event, {
     ...query,
-    limit: hasSearch ? (query.limit ?? 20) : query.limit,
+    limit: query.limit ?? 20,
   })
 })
