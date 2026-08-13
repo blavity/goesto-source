@@ -10,6 +10,10 @@ export default withNuxt(antfu(
       'app/components/ui/**',
       'app/data/**',
       'public/*.json',
+      // Internal governance and planning docs. Not source, and excluded from the
+      // public AGPL source mirror. Their fenced code samples are illustrative
+      // rather than executable, so linting them as code produces only noise.
+      '.internal/**',
     ],
     rules: {
       '@typescript-eslint/ban-ts-comment': 'off',
