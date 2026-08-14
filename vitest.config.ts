@@ -65,7 +65,7 @@ export default defineConfig(async ({ mode }) => ({
       {
         // Composable/store tests. These import from app/, which imports `vue` —
         // a package the Workers runtime cannot resolve, so they never executed
-        // at all (blavity/sink issue 1). Plain Node instead.
+        // at all. Plain Node instead.
         test: {
           name: 'unit',
           include: ['tests/unit/**/*.spec.ts'],
