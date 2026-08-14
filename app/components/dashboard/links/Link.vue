@@ -3,7 +3,6 @@ import type { ComponentPublicInstance } from 'vue'
 import type { DashboardLink } from '@/types/dashboard-links'
 import { CalendarPlus2, Copy, CopyCheck, Ellipsis, Eraser, Flame, Hourglass, Link as LinkIcon, MousePointerClick, QrCode, ShieldAlert, SquarePen, Users } from '@lucide/vue'
 import { useClipboard, useMediaQuery } from '@vueuse/core'
-import { parseURL } from 'ufo'
 import { toast } from 'vue-sonner'
 
 const props = defineProps<{
@@ -69,13 +68,11 @@ const requestUrl = useRequestURL()
 const host = requestUrl.host
 const origin = requestUrl.origin
 
-function getLinkHost(url: string): string | undefined {
-  const { host } = parseURL(url)
-  return host
-}
-
 const shortLink = computed(() => `${origin}/${props.link.slug}`)
-const linkIcon = computed(() => `https://unavatar.webp.se/${getLinkHost(props.link.url)}?fallback=https://sink.cool/icon.png`)
+// Served locally. Upstream requested a per-link icon from a third-party avatar
+// service keyed on the destination host, which disclosed the host of every
+// shortened link to that service on each dashboard render.
+const linkIcon = '/icon.png'
 const isExpired = computed(() => Boolean(props.link.expiration && props.link.expiration <= Math.floor(Date.now() / 1000)))
 const noteText = computed(() => props.link.comment?.trim() ?? '')
 const summaryText = computed(() => props.link.title?.trim() || props.link.description?.trim() || '')

@@ -53,12 +53,9 @@ const typedTestimonials = testimonials as Testimonial[]
             >
               <CardContent class="grid grid-cols-[auto_1fr] gap-3 px-4">
                 <Avatar class="size-9">
-                  <AvatarImage
-                    :alt="testimonial.name"
-                    :src="`https://unavatar.webp.se/x/${testimonial.username}`"
-                    loading="lazy"
-                    referrerpolicy="no-referrer"
-                  />
+                  <!-- Initials only: upstream fetched each avatar from a third-party
+                       service, a cross-origin request for every visitor to the public
+                       landing page. -->
                   <AvatarFallback>{{ testimonial.name.slice(0, 2) }}</AvatarFallback>
                 </Avatar>
 

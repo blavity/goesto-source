@@ -14,13 +14,11 @@ defineProps<{
     <Avatar
       class="size-5 shrink-0 p-0.5"
     >
-      <AvatarImage
-        :src="`https://unavatar.webp.se/${name}?fallback=false`"
-        :alt="name"
-        loading="lazy"
-        width="20"
-        height="20"
-      />
+      <!--
+        No remote favicon lookup. Upstream fetched one per referrer from a
+        third-party avatar service, which disclosed every referring domain in
+        the analytics to that service.
+      -->
       <AvatarFallback>
         <img
           src="/icon.png"
