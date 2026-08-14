@@ -43,10 +43,38 @@ export default defineConfig(async ({ mode }) => ({
   ],
   test: {
     env: loadEnv(mode, process.cwd(), ''),
-    isolate: false,
-    maxWorkers: 1,
-    setupFiles: ['./tests/setup.ts'],
-    testTimeout: 10_000,
+    projects: [
+      {
+        // Server/API tests. Run in the Workers runtime against the real
+        // wrangler.jsonc bindings — this is what makes D1/KV assertions real.
+        extends: true,
+        test: {
+          name: 'workers',
+          include: ['tests/**/*.spec.ts'],
+          exclude: ['tests/unit/**'],
+          isolate: false,
+          maxWorkers: 1,
+          setupFiles: ['./tests/setup.ts'],
+          testTimeout: 10_000,
+          // Vitest 4 requires a distinct sequence.groupOrder whenever
+          // projects differ on maxWorkers; otherwise it throws before any
+          // test runs.
+          sequence: { groupOrder: 0 },
+        },
+      },
+      {
+        // Composable/store tests. These import from app/, which imports `vue` —
+        // a package the Workers runtime cannot resolve, so they never executed
+        // at all (blavity/sink issue 1). Plain Node instead.
+        test: {
+          name: 'unit',
+          include: ['tests/unit/**/*.spec.ts'],
+          environment: 'node',
+          testTimeout: 10_000,
+          sequence: { groupOrder: 1 },
+        },
+      },
+    ],
     onUnhandledError(error) {
       return !isHandledValidationError(error)
     },

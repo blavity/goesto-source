@@ -38,6 +38,7 @@
     "import": "导入",
     "export": "导出",
     "coffee": "请我喝杯咖啡",
+    "source": "源代码 (AGPL-3.0)",
     "github": "GitHub",
     "releases": "版本发布",
     "stars": "Stars",

@@ -38,6 +38,7 @@
     "import": "가져오기",
     "export": "내보내기",
     "coffee": "커피 한 잔 사주기",
+    "source": "소스 코드 (AGPL-3.0)",
     "github": "GitHub",
     "releases": "릴리스",
     "stars": "스타",

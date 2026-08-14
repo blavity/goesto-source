@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ArrowUpCircle, Coffee, Languages, Laptop, Moon, Sun } from '@lucide/vue'
+import { ArrowUpCircle, Code, Coffee, Languages, Laptop, Moon, Sun } from '@lucide/vue'
 import { useSidebar } from '@/components/ui/sidebar'
 
 const { coffee } = useAppConfig()
@@ -34,6 +34,23 @@ const releaseLabel = computed(() => t('sidebar.update', {
               :aria-label="$t('sidebar.coffee')"
             >
               <Coffee aria-hidden="true" />
+            </a>
+          </SidebarMenuButton>
+        </SidebarMenuItem>
+
+        <SidebarMenuItem>
+          <SidebarMenuButton
+            as-child
+            :tooltip="$t('sidebar.source')"
+            class="w-9 justify-center px-0"
+          >
+            <a
+              href="https://github.com/blavity/sink-source"
+              target="_blank"
+              rel="noopener noreferrer"
+              :aria-label="$t('sidebar.source')"
+            >
+              <Code aria-hidden="true" />
             </a>
           </SidebarMenuButton>
         </SidebarMenuItem>

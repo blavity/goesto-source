@@ -48,6 +48,20 @@ function hasOgConfig(link: Link): boolean {
 }
 
 export default eventHandler(async (event) => {
+  // AGPL-3.0 section 13. Sink is a modified fork of an AGPL program served to
+  // anonymous users, so those users must be offered the Corresponding Source.
+  // Set before any early return — the homeURL redirect below is one, and a
+  // visitor who only ever hits `/` is still a user under section 13.
+  //
+  // appendHeader, not setHeader. `Link` is a list header that other things
+  // legitimately write: Nuxt emits preload/early-hint Link entries on the
+  // prerendered routes, and setHeader REPLACES, so a later writer would drop
+  // the offer from exactly those responses without any visible failure. The
+  // redirect path itself never had a second writer, which is what made this
+  // invisible. Appending is correct per RFC 8288 either way — a Link field
+  // may repeat, and repetitions are equivalent to one comma-joined value.
+  appendHeader(event, 'Link', '<https://github.com/blavity/sink-source>; rel="source"')
+
   const { pathname: slug } = parsePath(event.path.replace(/^\/|\/$/g, ''))
   const { slugRegex, reserveSlug } = useAppConfig()
   const { homeURL, linkCacheTtl, caseSensitive, redirectWithQuery, redirectStatusCode, redirectNoStore } = useRuntimeConfig(event)
