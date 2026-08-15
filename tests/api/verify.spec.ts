@@ -11,7 +11,9 @@ describe('/api/verify', () => {
     const data = await response.json() as VerifyResponse
     expect(data).toMatchObject({
       name: 'Sink',
-      url: 'https://sink.cool',
+      // The deployment's own origin, not a hardcoded upstream domain. Under
+      // the Workers test pool that is http://localhost.
+      url: new URL(response.url).origin,
       authMethod: 'site-token',
       userID: 'root',
       userEmail: 'root@localhost',

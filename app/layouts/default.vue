@@ -1,7 +1,6 @@
 <script setup lang="ts">
-import { ExternalLink, Menu, Star } from '@lucide/vue'
-import NumberFlow from '@number-flow/vue'
-import { GitHubIcon, TelegramIcon, XIcon } from 'vue3-simple-icons'
+import { ExternalLink, Menu } from '@lucide/vue'
+import { GitHubIcon } from 'vue3-simple-icons'
 import {
   NavigationMenu,
   NavigationMenuItem,
@@ -18,8 +17,7 @@ import {
 } from '@/components/ui/sheet'
 
 const mobileMenuOpen = shallowRef(false)
-const { title, documentation, telegram, twitter, github } = useAppConfig()
-const { rawStats } = useGithubStats()
+const { title, documentation, github } = useAppConfig()
 
 function closeMobileMenu() {
   mobileMenuOpen.value = false
@@ -118,8 +116,6 @@ function closeMobileMenu() {
                   class="flex items-center gap-1.5"
                 >
                   <GitHubIcon class="size-4" aria-hidden="true" />
-                  <Star class="size-3" aria-hidden="true" />
-                  <NumberFlow class="tabular-nums" :value="rawStats.stars" />
                 </a>
               </Button>
               <SwitchLanguage />
@@ -212,8 +208,6 @@ function closeMobileMenu() {
                         class="flex items-center gap-1.5"
                       >
                         <GitHubIcon class="size-4" aria-hidden="true" />
-                        <Star class="size-3" aria-hidden="true" />
-                        <NumberFlow class="tabular-nums" :value="rawStats.stars" />
                       </a>
                     </Button>
                     <div class="flex items-center justify-center gap-3">
@@ -277,38 +271,6 @@ function closeMobileMenu() {
             :aria-label="$t('layouts.links.resources_aria_label')"
             class="flex flex-wrap justify-center gap-2 text-sm"
           >
-            <Button
-              v-if="twitter"
-              as-child
-              variant="ghost"
-              size="icon"
-            >
-              <a
-                :href="twitter"
-                target="_blank"
-                rel="noopener noreferrer"
-                :title="$t('layouts.footer.social.twitter')"
-                :aria-label="$t('layouts.footer.social.twitter')"
-              >
-                <XIcon aria-hidden="true" />
-              </a>
-            </Button>
-            <Button
-              v-if="telegram"
-              as-child
-              variant="ghost"
-              size="icon"
-            >
-              <a
-                :href="telegram"
-                target="_blank"
-                rel="noopener noreferrer"
-                :title="$t('layouts.footer.social.telegram')"
-                :aria-label="$t('layouts.footer.social.telegram')"
-              >
-                <TelegramIcon aria-hidden="true" />
-              </a>
-            </Button>
             <Button
               v-if="github"
               as-child

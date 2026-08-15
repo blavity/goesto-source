@@ -37,7 +37,7 @@ export default eventHandler((event) => {
 
   return {
     name: 'Sink',
-    url: 'https://sink.cool',
+    url: getRequestURL(event).origin,
     authMethod,
     userID,
     userEmail,

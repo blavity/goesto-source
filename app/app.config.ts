@@ -1,11 +1,9 @@
 export default defineAppConfig({
   title: 'Sink',
-  documentation: 'https://docs.sink.cool',
-  github: 'https://github.com/miantiao-me/sink',
-  twitter: 'https://sink.cool/x',
-  telegram: 'https://sink.cool/telegram',
+  documentation: 'https://github.com/blavity/sink-source/tree/master/docs',
+  github: 'https://github.com/blavity/sink-source',
   description: 'A Simple / Speedy / Secure Link Shortener with Analytics, 100% run on Cloudflare.',
-  image: 'https://sink.cool/banner.png',
+  image: '/banner.png',
   previewTTL: 300, // 5 minutes
   slugRegex: /^[a-z0-9]+(?:-[a-z0-9]+)*$/i,
   reserveSlug: [

@@ -1,9 +1,8 @@
 <script setup lang="ts">
-import { ArrowRight } from '@lucide/vue'
-import { GitHubIcon, XIcon } from 'vue3-simple-icons'
+import { GitHubIcon } from 'vue3-simple-icons'
 import heroUrl from '@/assets/images/hero.svg?url'
 
-const { title, description, github, twitter } = useAppConfig()
+const { title, description, github } = useAppConfig()
 </script>
 
 <template>
@@ -26,33 +25,6 @@ const { title, description, github, twitter } = useAppConfig()
             lg:text-left
           "
         >
-          <!-- Twitter Follow Badge -->
-          <a
-            :href="twitter"
-            target="_blank"
-            rel="noopener"
-            :title="$t('home.twitter.follow')"
-            class="
-              mx-auto mb-8 inline-flex w-fit items-center gap-2 rounded-full
-              border bg-card p-1 pr-3 text-card-foreground transition-colors
-              hover:bg-accent hover:text-accent-foreground
-              focus-visible:ring-2 focus-visible:ring-ring
-              lg:mx-0
-            "
-          >
-            <span
-              class="
-                flex size-7 items-center justify-center rounded-full bg-primary
-                text-xs text-primary-foreground
-              "
-            >
-              <XIcon aria-hidden="true" class="size-3" />
-            </span>
-            <span class="text-sm">{{ $t('home.twitter.follow') }}</span>
-            <span class="block h-4 w-px bg-border" />
-            <ArrowRight aria-hidden="true" class="size-4" />
-          </a>
-
           <h1
             class="
               text-4xl font-medium text-balance
