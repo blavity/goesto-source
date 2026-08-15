@@ -1,9 +1,13 @@
 # Sink Repository Guide
 
+Blavity's link shortener — a hard fork of [Sink](https://github.com/miantiao-me/Sink)
+by miantiao-me, licensed AGPL-3.0. This guide describes **this** repository; it
+is maintained here and no longer tracks upstream's.
+
 ## Non-obvious constraints
 
 - Write all documentation and code comments in English.
-- Use Node.js 22 and pnpm 11.11.0 (`package.json` is authoritative). The root package is the Nuxt app; `docs/` is the `@sink/docs` VitePress workspace package.
+- Use Node.js 22 and pnpm 11.11.0 (`package.json` is authoritative). The root package is the Nuxt app; `docs/` is the `@sink/docs` VitePress workspace package, kept for development and excluded from the public source mirror.
 - Do not hand-edit `app/components/ui/**`; it is managed by shadcn-vue and excluded from ESLint.
 - Read `DESIGN.md` before UI work. The authoritative design sources are `app/assets/css/tailwind.css` and `app/components/ui/**`; `DESIGN.md` is a derived summary.
 - Do not invent undocumented design tokens.
@@ -43,7 +47,7 @@ pnpm test --run -t 'creates new link'     # tests matching a name
 
 ## Architecture and data flow
 
-- `app/` is a client-only Nuxt 4 UI (`ssr: false`); `/` and `/dashboard/**` are prerendered, and `/dashboard` redirects to `/dashboard/links`. `server/` is the Nitro backend using the `cloudflare-module` preset outside Cloudflare Pages.
+- `app/` is a client-only Nuxt 4 UI (`ssr: false`). Nothing is prerendered — no HTML shell is emitted, so `<head>` metadata reaches only clients that execute JavaScript. `/dashboard` redirects to `/dashboard/links`. `server/` is the Nitro backend using the `cloudflare-module` preset outside Cloudflare Pages.
 - `shared/` owns schemas, cross-runtime utilities, and shared types. Prefer `#shared/...`; `app/types/index.ts` only re-exports selected shared types for UI use. Never import `app/**` from `server/**`; move cross-runtime code to `shared/**` instead.
 - Use `useAPI()` for authenticated internal APIs, mutations, polling, searches, and abortable user flows. Reserve Nuxt `useFetch` for read-only data where AsyncData caching, deduplication, or shared state provides a concrete benefit.
 - D1 is the authoritative link store. KV is a write-through read cache and the temporary source for pre-D1 links until D1 records a completed KV-to-D1 migration run. Route link persistence through `server/utils/link-store.ts`; direct KV-only writes can lose authoritative data.
