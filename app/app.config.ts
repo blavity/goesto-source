@@ -1,5 +1,5 @@
 export default defineAppConfig({
-  title: 'Sink',
+  title: 'goesto',
   description: 'A Simple / Speedy / Secure Link Shortener with Analytics, 100% run on Cloudflare.',
   image: '/banner.png',
   previewTTL: 300, // 5 minutes

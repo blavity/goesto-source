@@ -44,4 +44,4 @@ won't survive.
 AGPL-3.0. See [`LICENSE`](./LICENSE). Upstream's copyright is retained; our
 modifications are released under the same licence.
 
-Corresponding Source: <https://github.com/blavity/sink-source>
+Corresponding Source: <https://github.com/blavity/goesto-source>

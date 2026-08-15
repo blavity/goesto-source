@@ -51,7 +51,7 @@ export default defineNuxtConfig({
       // copies drifted apart once already. Deliberately not enumerated here:
       // a list of call sites is a comment that goes stale.
       // Overridable as NUXT_PUBLIC_SOURCE_URL so a rename is one value.
-      sourceUrl: 'https://github.com/blavity/sink-source',
+      sourceUrl: 'https://github.com/blavity/goesto-source',
       previewMode: '',
       slugDefaultLength: '6',
       kvBatchLimit: '50',

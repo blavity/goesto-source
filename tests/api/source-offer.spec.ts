@@ -6,7 +6,7 @@ import { deleteStoredLinks, fetch, postJson, setLinkStoreD1Mode } from '../utils
 // runtimeConfig.public.sourceUrl; a test that read the same value would pass
 // no matter what that value was. Stating the expectation independently is what
 // makes this catch a misconfigured offer.
-const SOURCE_URL = 'https://github.com/blavity/sink-source'
+const SOURCE_URL = 'https://github.com/blavity/goesto-source'
 const SOURCE_LINK = `<${SOURCE_URL}>; rel="source"`
 
 const createdSlugs: string[] = []
