@@ -2,6 +2,7 @@
 import { Code, Languages, Laptop, Moon, Sun } from '@lucide/vue'
 import { useSidebar } from '@/components/ui/sidebar'
 
+const { sourceUrl } = useSourceUrl()
 const colorMode = useColorMode()
 const { setLocale, locales } = useI18n()
 const { isMobile, state } = useSidebar()
@@ -22,7 +23,7 @@ const secondaryMenuClass = computed(() => isMobile.value || state.value === 'exp
             class="w-9 justify-center px-0"
           >
             <a
-              href="https://github.com/blavity/sink-source"
+              :href="sourceUrl"
               target="_blank"
               rel="noopener noreferrer"
               :aria-label="$t('sidebar.source')"

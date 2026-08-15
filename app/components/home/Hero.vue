@@ -2,7 +2,8 @@
 import { GitHubIcon } from 'vue3-simple-icons'
 import heroUrl from '@/assets/images/hero.svg?url'
 
-const { title, description, github } = useAppConfig()
+const { title, description } = useAppConfig()
+const { sourceUrl } = useSourceUrl()
 </script>
 
 <template>
@@ -59,7 +60,7 @@ const { title, description, github } = useAppConfig()
               variant="ghost"
             >
               <a
-                :href="github"
+                :href="sourceUrl"
                 target="_blank"
                 rel="noopener noreferrer"
                 :title="$t('layouts.footer.social.github')"

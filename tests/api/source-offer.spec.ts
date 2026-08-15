@@ -2,6 +2,10 @@ import { SELF } from 'cloudflare:test'
 import { afterAll, beforeAll, describe, expect, it } from 'vitest'
 import { deleteStoredLinks, fetch, postJson, setLinkStoreD1Mode } from '../utils'
 
+// Deliberately literal. The app builds this header from
+// runtimeConfig.public.sourceUrl; a test that read the same value would pass
+// no matter what that value was. Stating the expectation independently is what
+// makes this catch a misconfigured offer.
 const SOURCE_URL = 'https://github.com/blavity/sink-source'
 const SOURCE_LINK = `<${SOURCE_URL}>; rel="source"`
 

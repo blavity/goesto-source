@@ -1,5 +1,5 @@
 <script setup lang="ts">
-const { documentation } = useAppConfig()
+const { docsUrl } = useSourceUrl()
 </script>
 
 <template>
@@ -34,7 +34,7 @@ const { documentation } = useAppConfig()
               size="lg"
             >
               <a
-                :href="`${documentation}/guide/getting-started`"
+                :href="`${docsUrl}/guide/getting-started`"
                 target="_blank"
                 rel="noopener noreferrer"
                 :title="$t('home.cta.button')"

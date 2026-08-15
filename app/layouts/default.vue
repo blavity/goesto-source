@@ -17,7 +17,8 @@ import {
 } from '@/components/ui/sheet'
 
 const mobileMenuOpen = shallowRef(false)
-const { title, documentation, github } = useAppConfig()
+const { title } = useAppConfig()
+const { sourceUrl, docsUrl } = useSourceUrl()
 
 function closeMobileMenu() {
   mobileMenuOpen.value = false
@@ -82,7 +83,7 @@ function closeMobileMenu() {
                   <NavigationMenuItem>
                     <NavigationMenuLink as-child>
                       <a
-                        :href="documentation"
+                        :href="docsUrl"
                         target="_blank"
                         rel="noopener noreferrer"
                         :aria-label="$t('layouts.links.documentation_aria_label')"
@@ -108,7 +109,7 @@ function closeMobileMenu() {
 
               <Button as-child variant="outline">
                 <a
-                  :href="github"
+                  :href="sourceUrl"
                   target="_blank"
                   rel="noopener noreferrer"
                   :title="$t('layouts.footer.social.github')"
@@ -167,7 +168,7 @@ function closeMobileMenu() {
                 >
                   <nav class="flex flex-col gap-1">
                     <a
-                      :href="documentation"
+                      :href="docsUrl"
                       target="_blank"
                       rel="noopener noreferrer"
                       :aria-label="$t('layouts.links.documentation_aria_label')"
@@ -200,7 +201,7 @@ function closeMobileMenu() {
                   <div class="mt-auto flex flex-col items-stretch gap-4">
                     <Button as-child variant="outline">
                       <a
-                        :href="github"
+                        :href="sourceUrl"
                         target="_blank"
                         rel="noopener noreferrer"
                         :title="$t('layouts.footer.social.github')"
@@ -272,13 +273,13 @@ function closeMobileMenu() {
             class="flex flex-wrap justify-center gap-2 text-sm"
           >
             <Button
-              v-if="github"
+              v-if="sourceUrl"
               as-child
               variant="ghost"
               size="icon"
             >
               <a
-                :href="github"
+                :href="sourceUrl"
                 target="_blank"
                 rel="noopener noreferrer"
                 :title="$t('layouts.footer.social.github')"

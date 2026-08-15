@@ -43,6 +43,15 @@ export default defineNuxtConfig({
     webhookUrl: '',
     webhookSecret: '',
     public: {
+      // The single source of truth for where our Corresponding Source lives.
+      // AGPL-3.0 section 13 obliges us to offer it to users of the running
+      // service. Everything that surfaces it — the Link: rel="source" header,
+      // the dashboard sidebar, the footer, the hero, the docs links — reads it
+      // through useSourceUrl() rather than repeating the URL, because those
+      // copies drifted apart once already. Deliberately not enumerated here:
+      // a list of call sites is a comment that goes stale.
+      // Overridable as NUXT_PUBLIC_SOURCE_URL so a rename is one value.
+      sourceUrl: 'https://github.com/blavity/sink-source',
       previewMode: '',
       slugDefaultLength: '6',
       kvBatchLimit: '50',

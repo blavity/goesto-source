@@ -60,7 +60,8 @@ export default eventHandler(async (event) => {
   // redirect path itself never had a second writer, which is what made this
   // invisible. Appending is correct per RFC 8288 either way — a Link field
   // may repeat, and repetitions are equivalent to one comma-joined value.
-  appendHeader(event, 'Link', '<https://github.com/blavity/sink-source>; rel="source"')
+  const { sourceUrl } = useRuntimeConfig(event).public
+  appendHeader(event, 'Link', `<${sourceUrl}>; rel="source"`)
 
   const { pathname: slug } = parsePath(event.path.replace(/^\/|\/$/g, ''))
   const { slugRegex, reserveSlug } = useAppConfig()

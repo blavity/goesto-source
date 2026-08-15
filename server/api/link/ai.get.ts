@@ -70,8 +70,8 @@ export default eventHandler(async (event) => {
     { role: 'user', content: 'https://example.com/' },
     { role: 'assistant', content: '{"slug": "example"}' },
 
-    { role: 'user', content: 'https://github.com/blavity/sink-source' },
-    { role: 'assistant', content: '{"slug": "sink-source"}' },
+    { role: 'user', content: 'https://github.com/acme/widget-factory' },
+    { role: 'assistant', content: '{"slug": "widget-factory"}' },
 
     { role: 'user', content: userContent },
   ]
