@@ -71,7 +71,7 @@ export default eventHandler(async (event) => {
     { role: 'assistant', content: '{"slug": "example"}' },
 
     { role: 'user', content: 'https://github.com/blavity/sink-source' },
-    { role: 'assistant', content: '{"slug": "sink"}' },
+    { role: 'assistant', content: '{"slug": "sink-source"}' },
 
     { role: 'user', content: userContent },
   ]
