@@ -7,7 +7,6 @@
     <HomeHero />
     <HomeLogos />
     <HomeFeatures />
-    <HomeTestimonials />
     <HomeCta />
   </div>
 </template>
