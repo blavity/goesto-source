@@ -9,6 +9,9 @@ overrides:
   vue-metamorph@3.3.4>glob: 11.1.0
   vitepress@1.6.4>vite: 6.4.3
 
+patchedDependencies:
+  '@eslint/markdown@8.0.3': af43c5cbb323d9911cd8b167fcfa01bb337b81cb2d15165d53ef40332667c127
+
 importers:
 
   .:
@@ -8949,7 +8952,7 @@ snapshots:
       '@clack/prompts': 1.7.0
       '@e18e/eslint-plugin': 0.5.1(eslint@10.7.0(jiti@2.7.0))
       '@eslint-community/eslint-plugin-eslint-comments': 4.7.2(eslint@10.7.0(jiti@2.7.0))
-      '@eslint/markdown': 8.0.3
+      '@eslint/markdown': 8.0.3(patch_hash=af43c5cbb323d9911cd8b167fcfa01bb337b81cb2d15165d53ef40332667c127)
       '@stylistic/eslint-plugin': 5.10.0(eslint@10.7.0(jiti@2.7.0))
       '@typescript-eslint/eslint-plugin': 8.63.0(@typescript-eslint/parser@8.63.0(eslint@10.7.0(jiti@2.7.0))(typescript@5.9.3))(eslint@10.7.0(jiti@2.7.0))(typescript@5.9.3)
       '@typescript-eslint/parser': 8.63.0(eslint@10.7.0(jiti@2.7.0))(typescript@5.9.3)
@@ -9768,7 +9771,7 @@ snapshots:
     optionalDependencies:
       eslint: 10.7.0(jiti@2.7.0)
 
-  '@eslint/markdown@8.0.3':
+  '@eslint/markdown@8.0.3(patch_hash=af43c5cbb323d9911cd8b167fcfa01bb337b81cb2d15165d53ef40332667c127)':
     dependencies:
       '@eslint/core': 1.2.1
       '@eslint/plugin-kit': 0.7.2

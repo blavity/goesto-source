@@ -1,0 +1,19 @@
+diff --git a/dist/rules/no-reversed-media-syntax.js b/dist/rules/no-reversed-media-syntax.js
+index 690c25d460fbcfa86bed168a088c1ef049b67894..c3f66bf77b7a5ab17837b3e9e7bbf1649fce2a97 100644
+--- a/dist/rules/no-reversed-media-syntax.js
++++ b/dist/rules/no-reversed-media-syntax.js
+@@ -16,8 +16,12 @@
+ //-----------------------------------------------------------------------------
+ // Helpers
+ //-----------------------------------------------------------------------------
+-/** Matches reversed link/image syntax like `(text)[url]`, ignoring escaped characters like `\(text\)[url]`. */
+-const reversedPattern = /(?<=(?<!\\)(?:\\{2})*)\((?<label>(?:\\.|[^()\\]|\([\s\S]*\))*)\)\[(?<url>(?:\\.|[^\]\\\r\n])*)\](?!\()/gu;
++/**
++ * Matches reversed link/image syntax like `(text)[url]`, ignoring escaped characters like `\(text\)[url]`.
++ * The nested group is `\([^()]*\)`, not `\([\s\S]*\)`, so that it cannot overlap the
++ * other alternatives. Overlapping alternatives cause catastrophic backtracking.
++ */
++const reversedPattern = /(?<=(?<!\\)(?:\\{2})*)\((?<label>(?:\\.|[^()\\]|\([^()]*\))*)\)\[(?<url>(?:\\.|[^\]\\\r\n])*)\](?!\()/gu;
+ //-----------------------------------------------------------------------------
+ // Rule Definition
+ //-----------------------------------------------------------------------------
