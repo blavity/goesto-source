@@ -16,7 +16,7 @@ peerDependencyRules:
     #
     # Remove this once the dependency graph offers an oxc-parser that satisfies
     # the range without regressing the build.
-    'unctx>oxc-parser': '0.133.0'
+    unctx>oxc-parser: 0.133.0
 overrides:
   source-map-resolve@0.6.0>decode-uri-component: 0.2.2
   vue-metamorph@3.3.4>glob: 11.1.0
