@@ -2,6 +2,21 @@ packages:
   - docs
 
 strictPeerDependencies: true
+peerDependencyRules:
+  allowedVersions:
+    # unctx@3.0.0 (via @nuxt/devtools 3.4.1, the GHSA-279x-mwfv-vcqv fix) wants
+    # oxc-parser >=0.140.0 as an OPTIONAL peer. strictPeerDependencies makes an
+    # unmet peer fail `pnpm install` outright, but only on a re-resolution — so
+    # it surfaces the moment package.json changes, not before.
+    #
+    # Satisfying it is worse than allowing it: overriding oxc-parser to >=0.140
+    # resolves 0.144.0 and breaks the app — 56 tests fail with HTTP 500 against
+    # a build that is otherwise green on main. The parser is build-time tooling
+    # and nothing in it reaches the Worker, so the mismatch is inert.
+    #
+    # Remove this once the dependency graph offers an oxc-parser that satisfies
+    # the range without regressing the build.
+    'unctx>oxc-parser': '0.133.0'
 overrides:
   source-map-resolve@0.6.0>decode-uri-component: 0.2.2
   vue-metamorph@3.3.4>glob: 11.1.0
