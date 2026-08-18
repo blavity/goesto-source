@@ -62,7 +62,7 @@
     "intl-parse-accept-language": "^1.0.0",
     "jose": "^6.2.3",
     "kysely": "0.29.3",
-    "nanoid": "^5.1.16",
+    "nanoid": "^6.0.0",
     "nuxt": "^4.4.8",
     "pinia": "^3.0.4",
     "qr-code-styling": "^1.9.2",
