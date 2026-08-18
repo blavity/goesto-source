@@ -10,7 +10,7 @@ const outputPath = new URL('wrangler.deploy.jsonc', rootDir)
 
 const defaultName = z.preprocess(
   value => typeof value === 'string' && value.trim() === '' ? undefined : value,
-  z.string().trim().min(1).default('sink'),
+  z.string().trim().min(1).default('goesto'),
 )
 
 const optionalName = z.preprocess(

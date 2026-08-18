@@ -21,7 +21,7 @@ describe('wrangler.jsonc runtime posture', () => {
 
   it('disables the workers.dev subdomain', () => {
     // Cloudflare Access is path-scoped to go.blavity.com/dashboard* and /api*.
-    // A live sink.<subdomain>.workers.dev hostname would serve the dashboard
+    // A live goesto.<subdomain>.workers.dev hostname would serve the dashboard
     // with no Access application in front of it.
     expect(config.workers_dev).toBe(false)
   })
@@ -40,11 +40,28 @@ describe('wrangler.jsonc runtime posture', () => {
     // ids: a blocklist only catches the ids someone thought to add, so the first
     // real id committed for a resource nobody listed would pass silently.
     const d1 = config.d1_databases.find((b: { binding: string }) => b.binding === 'DB')
-    expect(d1.database_name).toBe('sink')
+    expect(d1.database_name).toBe('goesto')
     expect(d1.database_id).toBe(PLACEHOLDER_D1_ID)
 
     const kv = config.kv_namespaces.find((b: { binding: string }) => b.binding === 'KV')
     expect(kv.id).toBe(PLACEHOLDER_KV_ID)
     expect(kv.preview_id).toBe(PLACEHOLDER_KV_ID)
+  })
+
+  it('names every committed resource fallback consistently', () => {
+    // These are the values wrangler dev uses, and the ones a deploy env falls
+    // back to when a DEPLOY_* variable is missing. They are not placeholders,
+    // so nothing above catches them drifting from the real resource names.
+    const d1 = config.d1_databases.find((b: { binding: string }) => b.binding === 'DB')
+    expect(d1.database_name).toBe('goesto')
+
+    const analytics = config.analytics_engine_datasets.find(
+      (b: { binding: string }) => b.binding === 'ANALYTICS',
+    )
+    expect(analytics.dataset).toBe('goesto')
+
+    const r2 = config.r2_buckets.find((b: { binding: string }) => b.binding === 'R2')
+    expect(r2.bucket_name).toBe('goesto')
+    expect(r2.preview_bucket_name).toBe('goesto')
   })
 })
