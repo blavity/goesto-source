@@ -34,12 +34,32 @@ minimumReleaseAgeExclude:
   - '@nuxtjs/i18n@10.4.1'
   - eslint@10.7.0
   - virtua@0.49.3
-# Backport of https://github.com/eslint/markdown/pull/693, which fixes the
-# catastrophic backtracking in `markdown/no-reversed-media-syntax` reported as
-# https://github.com/eslint/markdown/issues/690. Without it `pnpm lint` can hang
-# for tens of minutes on ordinary parenthesis-dense prose. The patch is pinned to
-# an exact version, so a dependency bump fails the install rather than silently
-# dropping the fix — at that point check whether the release carries the upstream
-# fix and delete both this entry and `patches/`.
+# Two fixes for `@eslint/markdown`, both of which take down the whole lint run
+# on ordinary Markdown, and neither of which is in any published release.
+#
+# 1. Backport of https://github.com/eslint/markdown/pull/693, which fixes the
+#    catastrophic backtracking in `markdown/no-reversed-media-syntax` reported
+#    as https://github.com/eslint/markdown/issues/690. Without it `pnpm lint`
+#    can hang for tens of minutes on parenthesis-dense prose.
+#
+# 2. Positions are backfilled onto AST nodes that arrive without any, so
+#    `sourceCode.getText()` and `getRange()` keep working for them.
+#    `mdast-util-gfm-autolink-literal` rewrites text through
+#    `mdast-util-find-and-replace`, which builds replacement nodes with no
+#    `position`; that happens for any autolink literal inside brackets that
+#    failed to resolve as a link reference, such as `[https://example.com]`.
+#    `@eslint/plugin-kit` then throws "Custom getRange() method must be
+#    implemented in the subclass." and ESLint aborts, naming neither the file
+#    nor the rule. Reported upstream as
+#    https://github.com/eslint/markdown/issues/619, open and unfixed; the
+#    autofix crash in https://github.com/eslint/markdown/issues/710 has the
+#    same cause.
+#
+# The patch is pinned to an exact version, so a dependency bump fails the
+# install rather than silently dropping either fix — at that point check
+# whether the release carries both, and delete this entry, `patches/`, the
+# `@eslint/markdown` devDependency and
+# `tests/unit/eslint-markdown-patch.spec.ts` only once it does. That spec is
+# what fails if either fix regresses; nothing in CI lints this repo.
 patchedDependencies:
   '@eslint/markdown@8.0.3': patches/@eslint__markdown@8.0.3.patch

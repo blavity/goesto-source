@@ -1,3 +1,152 @@
+diff --git a/dist/language/markdown-source-code.js b/dist/language/markdown-source-code.js
+index 6557ef725d8fc6c8ef9a26827dcb3c633e197421..93662251fff4d724559f9aca2388a5269e85374f 100644
+--- a/dist/language/markdown-source-code.js
++++ b/dist/language/markdown-source-code.js
+@@ -22,6 +22,136 @@ import { lineEndingPattern } from "../util.js";
+ const commentParser = new ConfigCommentParser();
+ const configCommentStart = /<!--\s*eslint(?:-enable|-disable(?:(?:-next)?-line)?)?(?:\s|-->)/u;
+ const htmlComment = /<!--(.*?)-->/gsu;
++/**
++ * Returns the source text a node was built from, reassembled from its own
++ * value or from the values of its descendants.
++ * @param {Node} node The node to read.
++ * @returns {string} The raw text of the node.
++ */
++function rawTextOf(node) {
++    if (typeof node.value === "string") {
++        return node.value;
++    }
++    let raw = "";
++    for (const child of node.children ?? []) {
++        raw += rawTextOf(child);
++    }
++    return raw;
++}
++/**
++ * Backfills `position` on nodes that the mdast pipeline leaves unpositioned.
++ *
++ * `mdast-util-gfm-autolink-literal` rewrites text through
++ * `mdast-util-find-and-replace`, which builds its replacement nodes with no
++ * `position` at all. That path runs whenever an autolink literal sits inside
++ * brackets that failed to resolve as a link reference — ordinary Markdown such
++ * as `[https://example.com]`. Rules then call `sourceCode.getText(node)` on
++ * those nodes and `@eslint/plugin-kit` throws "Custom getRange() method must be
++ * implemented in the subclass.", which aborts the entire lint run rather than
++ * failing one rule on one file.
++ *
++ * The replacement nodes are contiguous slices of their parent's source text, so
++ * each one is located by searching the parent's span for the node's raw text.
++ * A node whose raw text cannot be located — decoded character references, for
++ * instance, no longer match the source — gets a zero-width position at the
++ * current cursor, so rules see an empty string and report nothing instead of
++ * reporting against the wrong offsets.
++ * @param {Node} root The root node to backfill.
++ * @param {string} text The full source text.
++ * @returns {void}
++ */
++function backfillPositions(root, text) {
++    /*
++     * Line ends where `lineEndingPattern` (/\r\n|[\r\n]/u) says it does, which
++     * includes a bare CR. Counting only LF would put every node of a CR-only
++     * document on line 1 with an ever-growing column, disagreeing with the line
++     * math the rest of ESLint does through the same pattern. A CR followed by
++     * an LF is skipped here so that CRLF is counted once, by its LF.
++     */
++    const lineStartOffsets = [0];
++    for (let i = 0; i < text.length; i++) {
++        const code = text.charCodeAt(i);
++        if (code === 10 /* \n */ ||
++            (code === 13 /* \r */ && text.charCodeAt(i + 1) !== 10)) {
++            lineStartOffsets.push(i + 1);
++        }
++    }
++    /**
++     * Converts an offset into a unist point.
++     * @param {number} offset The offset to convert.
++     * @returns {{line:number,column:number,offset:number}} The point.
++     */
++    function pointAt(offset) {
++        let low = 0;
++        let high = lineStartOffsets.length - 1;
++        while (low < high) {
++            const mid = Math.ceil((low + high) / 2);
++            if (lineStartOffsets[mid] <= offset) {
++                low = mid;
++            }
++            else {
++                high = mid - 1;
++            }
++        }
++        return {
++            line: low + 1,
++            column: offset - lineStartOffsets[low] + 1,
++            offset,
++        };
++    }
++    /**
++     * Walks a node, positioning any unpositioned children.
++     * @param {Node} node The node to walk.
++     * @returns {void}
++     */
++    function visit(node) {
++        const children = node.children;
++        if (!children?.length) {
++            return;
++        }
++        const parentEnd = node.position?.end.offset;
++        let cursor = node.position?.start.offset;
++        for (const child of children) {
++            if (child.position) {
++                cursor = child.position.end.offset;
++            }
++            else if (cursor !== undefined && parentEnd !== undefined) {
++                const raw = rawTextOf(child);
++                /*
++                 * These nodes are contiguous slices of the parent, so a node
++                 * almost always starts exactly at the cursor; `startsWith`
++                 * settles that in O(raw) and allocates nothing. Only the rare
++                 * miss pays for a copy of the parent's span — bounded by the
++                 * parent rather than by the document, because an unbounded
++                 * `text.indexOf(raw, cursor)` scans to EOF before returning
++                 * -1, once per unpositioned node.
++                 */
++                let index = -1;
++                if (raw) {
++                    if (text.startsWith(raw, cursor)) {
++                        index = cursor;
++                    }
++                    else {
++                        const offsetInParent = text
++                            .slice(cursor, parentEnd)
++                            .indexOf(raw);
++                        index =
++                            offsetInParent === -1
++                                ? -1
++                                : cursor + offsetInParent;
++                    }
++                }
++                const found = index !== -1 && index + raw.length <= parentEnd;
++                const start = found ? index : cursor;
++                const end = found ? index + raw.length : cursor;
++                child.position = { start: pointAt(start), end: pointAt(end) };
++                cursor = end;
++            }
++            visit(child);
++        }
++    }
++    visit(root);
++}
+ /**
+  * Represents an inline config comment in the source code.
+  */
+@@ -125,6 +255,7 @@ export class MarkdownSourceCode extends TextSourceCodeBase {
+     constructor({ text, ast }) {
+         super({ ast, text, lineEndingPattern });
+         this.ast = ast;
++        backfillPositions(ast, text);
+         // need to traverse the source code to get the inline config nodes
+         this.traverse();
+     }
 diff --git a/dist/rules/no-reversed-media-syntax.js b/dist/rules/no-reversed-media-syntax.js
 index 690c25d460fbcfa86bed168a088c1ef049b67894..c3f66bf77b7a5ab17837b3e9e7bbf1649fce2a97 100644
 --- a/dist/rules/no-reversed-media-syntax.js

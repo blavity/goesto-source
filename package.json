@@ -83,6 +83,7 @@
   "devDependencies": {
     "@antfu/eslint-config": "^9.1.0",
     "@cloudflare/vitest-pool-workers": "^0.18.4",
+    "@eslint/markdown": "8.0.3",
     "@nuxt/eslint": "^1.16.0",
     "@tailwindcss/vite": "^4.3.2",
     "@types/d3-geo": "^3.1.0",
