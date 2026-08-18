@@ -40,3 +40,7 @@ opencode.json
 
 # Local deepwork session state
 .slim/deepwork/
+
+# Cutover working directory (.internal/runbooks/goesto-cutover.md).
+# Holds a full copy of the link table while a cutover is in flight.
+.cutover/
