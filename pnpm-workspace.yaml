@@ -20,7 +20,7 @@ peerDependencyRules:
 overrides:
   source-map-resolve@0.6.0>decode-uri-component: 0.2.2
   vue-metamorph@3.3.4>glob: 11.1.0
-  vitepress@1.6.4>vite: 6.4.3
+  vitepress@1.6.4>vite: 8.1.6
 allowBuilds:
   '@parcel/watcher': true
   esbuild: true
