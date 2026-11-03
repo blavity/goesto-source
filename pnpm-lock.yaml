@@ -11,6 +11,7 @@ overrides:
 
 patchedDependencies:
   '@eslint/markdown@8.0.3': 17eafdb12d7b033130f5467aa0242da2dea07f772d38503a5d41d65ad4d9f656
+  source-map-resolve@0.6.0: 8a2d6b9b66b239cd2ef8e512f12dfd81d4a5dc02219ec42d445ede6ae3f48bb1
 
 importers:
 
@@ -13650,7 +13651,7 @@ snapshots:
     dependencies:
       inherits: 2.0.4
       source-map: 0.6.1
-      source-map-resolve: 0.6.0
+      source-map-resolve: 0.6.0(patch_hash=8a2d6b9b66b239cd2ef8e512f12dfd81d4a5dc02219ec42d445ede6ae3f48bb1)
 
   csscolorparser@1.0.3: {}
 
@@ -17496,7 +17497,7 @@ snapshots:
 
   source-map-js@1.2.2: {}
 
-  source-map-resolve@0.6.0:
+  source-map-resolve@0.6.0(patch_hash=8a2d6b9b66b239cd2ef8e512f12dfd81d4a5dc02219ec42d445ede6ae3f48bb1):
     dependencies:
       atob: 2.1.2
       decode-uri-component: 0.5.1

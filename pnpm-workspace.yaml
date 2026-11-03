@@ -63,3 +63,12 @@ minimumReleaseAgeExclude:
 # what fails if either fix regresses; nothing in CI lints this repo.
 patchedDependencies:
   '@eslint/markdown@8.0.3': patches/@eslint__markdown@8.0.3.patch
+  # source-map-resolve@0.6.0 calls require("decode-uri-component") and invokes
+  # the result while reading an external source map. 0.5.x is ESM-only, and on
+  # Node 22 that require() returns the module namespace, so the call throws
+  # "decodeUriComponentLib is not a function". The override above stays on
+  # 0.5.1 for the security fix; this patch uses `.default` when the export is
+  # not already a function. Remove it if source-map-resolve stops calling the
+  # required value directly, or if nothing depends on source-map-resolve@0.6.0.
+  # tests/unit/source-map-resolve-patch.spec.ts fails if this regresses.
+  source-map-resolve@0.6.0: patches/source-map-resolve@0.6.0.patch
