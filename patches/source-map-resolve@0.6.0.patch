@@ -1,0 +1,17 @@
+diff --git a/index.js b/index.js
+index 66bb63834990021f524699e903697a782f756912..c99d8d19c86c8da38a072f6c6ffb75f36c1c187f 100644
+--- a/index.js
++++ b/index.js
+@@ -2,6 +2,12 @@ var atob = require("atob")
+ var urlLib = require("url")
+ var pathLib = require("path")
+ var decodeUriComponentLib = require("decode-uri-component")
++// decode-uri-component 0.5.x is ESM-only. Node's require() of that module
++// returns the namespace object, so the function is on `.default`. 0.2.x
++// exported the function itself; accept either shape.
++if (typeof decodeUriComponentLib !== "function" && decodeUriComponentLib) {
++  decodeUriComponentLib = decodeUriComponentLib.default
++}
+ 
+ 
+ 
